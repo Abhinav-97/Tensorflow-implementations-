@@ -28,13 +28,16 @@ def nueral_network_model(data):
     output_layer = {"weights": tf.Variable(tf.random_normal([n_nodes_hl3, n_classes])),
                     "biases": tf.Variable(tf.random_normal([n_classes]))}
 
-    l1 = tf.add(tf.matmul(data, hidden_1_layer["weights"]), hidden_1_layer["biases"])
+    l1 = tf.add(
+        tf.matmul(data, hidden_1_layer["weights"]), hidden_1_layer["biases"])
     l1 = tf.nn.relu(l1)
 
-    l2 = tf.add(tf.matmul(l1, hidden_2_layer["weights"]), hidden_2_layer["biases"])
+    l2 = tf.add(
+        tf.matmul(l1, hidden_2_layer["weights"]), hidden_2_layer["biases"])
     l2 = tf.nn.relu(l2)
 
-    l3 = tf.add(tf.matmul(l2, hidden_3_layer["weights"]), hidden_3_layer["biases"])
+    l3 = tf.add(
+        tf.matmul(l2, hidden_3_layer["weights"]), hidden_3_layer["biases"])
     l3 = tf.nn.relu(l3)
 
     output = tf.matmul(l3, output_layer["weights"]) + output_layer["biases"]
@@ -43,30 +46,29 @@ def nueral_network_model(data):
 
 
 def train_nueral_network(x):
-    predictions = nueral_network_model(x)
-    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
-        logits=predictions, labels=y))
-    optimizer = tf.train.AdamOptimizer().minimize(cost)
+	predictions = nueral_network_model(x)
+	cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=predictions, labels=y))
+	optimizer = tf.train.AdamOptimizer().minimize(cost)
 
-    hm_epochs = 10
-    with tf.session as sess:
-        sess.run(tf.global_variables_initializer())
+	hm_epochs = 10
+	with tf.Session() as sess:
+		sess.run(tf.global_variables_initializer())
 
-# Training the network
-    for epoch in range(hm_epochs):
-        epoch_loss = 0
-        for _ in range(int(mnist.train.num_examples/batch_size)):
-       		epoch_x,epoch_y = mnist.train.next_batch(batch_size)
-       		_,c = sess.run([optimizer,cost], feed_dict={x:epoch_x,y:epoch_y})
-       		epoch_loss += c
+	# Training the network
+		for epoch in range(hm_epochs):
+			epoch_loss = 0
+			for _ in range(int(mnist.train.num_examples/batch_size)):
+				epoch_x, epoch_y = mnist.train.next_batch(batch_size)
+				_, c = sess.run([optimizer, cost], feed_dict={ x: epoch_x, y: epoch_y })
+				epoch_loss += c
 
-       	print("Epoch ", epoch, " completed out of ", hm_epochs, "loss: ", epoch_loss)
+			print("Epoch ", epoch, " completed out of ",hm_epochs, "loss: ", epoch_loss)
 
-# evaluation of accuracy
-    correct = tf.equal(tf.argmax(predictions,1),tf.argmax(y,1))
-    accuracy = tf.reduce_mean(tf.cast(correct,"float"))
+	# evaluation of accuracy
+	correct = tf.equal(tf.argmax(predictions, 1), tf.argmax(y, 1))
+	accuracy = tf.reduce_mean(tf.cast(correct, "float"))
 
-    print("Accuracy: ", accuracy.eval({mnist.test.images,mnist.test.labels}))
+	print("Accuracy: ", accuracy.eval({mnist.test.images, mnist.test.labels}))
+
 
 train_nueral_network(x)
-
