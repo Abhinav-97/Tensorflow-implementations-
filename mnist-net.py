@@ -68,7 +68,7 @@ def train_nueral_network(x):
 	correct = tf.equal(tf.argmax(predictions, 1), tf.argmax(y, 1))
 	accuracy = tf.reduce_mean(tf.cast(correct, "float"))
 
-	print("Accuracy: ", accuracy.eval({mnist.test.images, mnist.test.labels}))
+	print("Accuracy: ", accuracy.eval({x:mnist.test.images,y:mnist.test.labels}))
 
 
 train_nueral_network(x)
