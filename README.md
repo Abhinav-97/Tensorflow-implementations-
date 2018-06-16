@@ -1,2 +1,2 @@
 # Tensorflow-implementations-
-Learning basics of tensorflow 
+Tensorflow for reference 
