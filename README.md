@@ -1,2 +1,2 @@
 # Tensorflow-implementations-
-Tensorflow for reference 
+Tensorflow implementations for reference 
